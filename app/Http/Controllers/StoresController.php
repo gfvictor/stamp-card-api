@@ -26,7 +26,7 @@ class StoresController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:50',
-            'email' => 'required|email|unique:stores, email',
+            'email' => 'required|email|unique:stores,email',
             'password' => 'required|string|min:6',
             'address' => 'required|string|max:150',
         ]);
