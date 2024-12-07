@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Points;
-use App\Reposotories\BaseRepository;
 
 class PointsRepository extends BaseRepository
 {

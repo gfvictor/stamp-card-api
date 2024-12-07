@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Transactions;
-use App\Reposotories\BaseRepository;
 
 class TransactionsRepository extends BaseRepository
 {
