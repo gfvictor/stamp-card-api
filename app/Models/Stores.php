@@ -28,16 +28,16 @@ class Stores extends Authenticatable
 
     public function rules(): Relation
     {
-        return $this->hasMany(Rule::class, 'rules_id');
+        return $this->hasMany(Rules::class);
     }
 
     public function transactions(): Relation
     {
-        return $this->hasMany(Transaction::class, 'transactions_id');
+        return $this->hasMany(Transactions::class);
     }
 
     public function points(): Relation
     {
-        return $this->hasMany(Point::class, 'points_id');
+        return $this->hasMany(Points::class);
     }
 }

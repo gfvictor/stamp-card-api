@@ -29,12 +29,12 @@ class Clients extends Authenticatable
 
     public function transaction(): Relation
     {
-        return $this->hasMany(Transaction::class, 'transactions_id');
+        return $this->hasMany(Transactions::class, 'transactions_id');
     }
 
     public function points(): Relation
     {
-        return $this->hasMany(Point::class, 'points_id');
+        return $this->hasMany(Points::class, 'points_id');
     }
 
 }

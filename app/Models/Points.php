@@ -11,13 +11,18 @@ class Points extends Model
 
     protected $guarded = [];
 
-    public function clients(): Relation
+    public function clients()
     {
-        return $this->hasMany(Client::class, 'clients_id');
+        return $this->belongsTo(Clients::class);
     }
 
-    public function stores(): Relation
+    public function stores()
     {
+        return $this->belongsTo(Stores::class);
+    }
 
+    public function transactions()
+    {
+        return $this->belongsTo(Transactions::class);
     }
 }
