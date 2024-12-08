@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Services\ClientsService;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
@@ -27,6 +28,7 @@ class ClientsController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:50',
             'email' => 'required|email|unique:clients,email',
+            'phone_number' => 'required|string|max:11|unique:clients,phone_number',
             'password' => 'required|string|min:6'
         ]);
 
@@ -46,7 +48,8 @@ class ClientsController extends Controller
         $data = $request->validate([
             'name' => 'sometimes|string|max:50',
             'email' => 'sometimes|email|unique:clients,email',
-            'password' => 'sometimes|string|min:6'
+            'password' => 'sometimes|string|min:6',
+            'phone_number' => 'sometimes|string|max:11|unique:clients,phone_number',
         ]);
 
         if (isset($data['password'])) {
@@ -62,4 +65,25 @@ class ClientsController extends Controller
         $this->service->delete($id);
         return response()->noContent();
     }
+
+    public function generateQrCode($id): JsonResponse
+    {
+        $client = $this->service->find($id);
+
+        if (!$client) {
+            return response()->json(['message' => 'Cliente não encontrado.'],
+                404);
+        }
+
+        $qrData = [
+            'clients_id' => $client->id,
+            'name' => $client->name,
+            'email' => $client->email,
+            'phone_number' => $client->phone_number
+        ];
+
+        $qrCode = QrCode::size(300)->generate(json_encode($qrData));
+        return response()->json(['qr_code' => $qrCode], 200);
+    }
+
 }
