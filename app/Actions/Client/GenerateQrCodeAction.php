@@ -7,7 +7,6 @@ use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Http\JsonResponse;
 
 class GenerateQrCodeAction
