@@ -14,9 +14,8 @@ class ShowAction
         $this->service = $service;
     }
 
-    public function __invoke($id): JsonResponse
+    public function __invoke(int $id): JsonResponse
     {
-        $client = $this->service->find($id);
-        return response()->json($client, 200);
+        return response()->json($this->service->find($id), 200);
     }
 }

@@ -25,7 +25,7 @@ class StoreAction
         ]);
 
         $data['password'] = bcrypt($data['password']);
-        $client = $this->service->create($data);
-        return response()->json($client, 201);
+
+        return response()->json($this->service->create($data), 201);
     }
 }

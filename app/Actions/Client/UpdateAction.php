@@ -15,7 +15,7 @@ class UpdateAction
         $this->service = $service;
     }
 
-    public function __invoke(Request $request, $id): JsonResponse
+    public function __invoke(Request $request, int $id): JsonResponse
     {
         $data = $request->validate([
             'name' => 'sometimes|string|max:50',
@@ -26,7 +26,6 @@ class UpdateAction
 
         $data['password'] = !empty($data['password']) ? bcrypt($data['password']) : $data['password'];
 
-        $client = $this->service->update($id, $data);
-        return response()->json($client, 200);
+        return response()->json($this->service->update($id, $data), 200);
     }
 }

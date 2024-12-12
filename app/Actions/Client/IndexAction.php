@@ -16,7 +16,6 @@ class IndexAction
 
     public function __invoke(): JsonResponse
     {
-        $client = $this->service->all();
-        return response()->json($client, 200);
+        return response()->json($this->service->all(), 200);
     }
 }
