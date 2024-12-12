@@ -13,7 +13,7 @@ class GenerateQrCodeAction
         $this->service = $service;
     }
 
-    public function __invoke($id): JsonResponse
+    public function __invoke(int $id): JsonResponse
     {
         $client = $this->service->find($id);
 
