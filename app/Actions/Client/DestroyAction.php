@@ -15,7 +15,7 @@ class DestroyAction
         $this->service = $service;
     }
 
-    public function __invoke(Request $request, int $id): JsonResponse
+    public function __invoke(int $id): JsonResponse
     {
         $this->service->delete($id);
 
