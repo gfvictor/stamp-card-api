@@ -3,11 +3,17 @@
 namespace App\Actions\Client;
 
 use App\Services\ClientsService;
-use BaconQrCode\Encoder\QrCode;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Http\JsonResponse;
 
 class GenerateQrCodeAction
 {
+    protected ClientsService $service;
+
     public function __construct(ClientsService $service)
     {
         $this->service = $service;
@@ -29,7 +35,14 @@ class GenerateQrCodeAction
             'phone_number' => $client->phone_number
         ];
 
-        $qrCode = QrCode::size(300)->generate(json_encode($qrData));
-        return response()->json(['qr_code' => $qrCode], 200);
+        $renderer = new ImageRenderer(
+            new RendererStyle(300),
+            new SvgImageBackEnd()
+        );
+
+        $writer = new Writer($renderer);
+
+        return response()->json(['qr_code' => $writer->writeString
+        (json_encode($qrData))], 200);
     }
 }
