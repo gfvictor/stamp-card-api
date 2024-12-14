@@ -9,14 +9,14 @@ return new class extends Migration
 
     public function up(): void
     {
-        Schema::table('store_rules', function (Blueprint $table) {
+        Schema::table('rules', function (Blueprint $table) {
             $table->integer('yen_per_point')->unsigned()->after('stores_id');
         });
     }
 
     public function down(): void
     {
-        Schema::table('store_rules', function (Blueprint $table) {
+        Schema::table('rules', function (Blueprint $table) {
             $table->dropColumn('yen_per_point');
         });
     }
