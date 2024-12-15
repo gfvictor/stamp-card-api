@@ -9,6 +9,7 @@ use App\Actions\Client\ShowAction;
 use App\Actions\Client\StoreAction;
 use App\Actions\Client\UpdateAction;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ClientsController extends Controller
 {
@@ -18,27 +19,27 @@ class ClientsController extends Controller
         return $action();
     }
 
-    public function store(StoreAction $action): JsonResponse
+    public function store(StoreAction $action, Request $request): JsonResponse
     {
-        return $action(request());
+        return $action($request);
     }
 
-    public function show(ShowAction $action, $id): JsonResponse
+    public function show(ShowAction $action, int $id): JsonResponse
     {
         return $action($id);
     }
 
-    public function update(UpdateAction $action, $id): JsonResponse
+    public function update(UpdateAction $action, Request $request, int $id): JsonResponse
     {
-        return $action(request(), $id);
+        return $action($request, $id);
     }
 
-    public function destroy(DestroyAction $action, $id): JsonResponse
+    public function destroy(DestroyAction $action, int $id): JsonResponse
     {
-        return $action(request(), $id);
+        return $action($id);
     }
 
-    public function generateQrCode(GenerateQrCodeAction $action, $id): JsonResponse
+    public function generateQrCode(GenerateQrCodeAction $action, int $id): JsonResponse
     {
         return $action($id);
     }
