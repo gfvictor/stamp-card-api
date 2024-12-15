@@ -18,6 +18,6 @@ class DestroyAction
     {
         $this->service->delete($id);
 
-        return response()->json(['message' => 'Cliente deletado com sucesso.'], 200);
+        return response()->json(['message' => 'Loja deletado com sucesso.'], 200);
     }
 }
