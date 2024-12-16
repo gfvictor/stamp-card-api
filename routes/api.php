@@ -42,7 +42,7 @@ Route::prefix('points')->group(function () {
     Route::get('total', [PointsController::class, 'getTotalPoints']);
 });
 
-Route::prefix('store-rules')->group(function () {
+Route::prefix('rules')->group(function () {
     Route::get('/', [RulesController::class, 'index']);
     Route::post('/', [RulesController::class, 'store']);
     Route::get('/{id}', [RulesController::class, 'show']);
