@@ -2,108 +2,44 @@
 
 namespace App\Controllers;
 
-use App\Models\Clients;
-use App\Models\Points;
-use App\Services\TransactionsService;
-use Illuminate\Http\Response;
+use App\Actions\Transaction\DestroyAction;
+use App\Actions\Transaction\GrantPointsAction;
+use App\Actions\Transaction\IndexAction;
+use App\Actions\Transaction\ShowAction;
+use App\Actions\Transaction\StoreAction;
+use App\Actions\Transaction\UpdateAction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class TransactionsController extends Controller
 {
-    protected TransactionsService $service;
-
-    public function __construct(TransactionsService $service)
+    public function index(IndexAction $action): JsonResponse
     {
-        $this->service = $service;
+        return $action();
     }
 
-    public function index(): JsonResponse
+    public function store(StoreAction $action, Request $request): JsonResponse
     {
-        $transactions = $this->service->all();
-        return response()->json($transactions, 200);
+        return $action($request);
     }
 
-    public function store(Request $request): JsonResponse
+    public function show(ShowAction $action, int $id): JsonResponse
     {
-        $data = $request->validate([
-            'clients_id' => 'required|exists:clients,id',
-            'stores_id' => 'required|exists:stores,id',
-            'point_changes' => 'required|integer',
-            'type' => 'required|in:accumulate,redeem',
-            'reason' => 'nullable|string|max:150'
-        ]);
-
-        $transaction = $this->service->create($data);
-        return response()->json($transaction, 201);
+        return $action($id);
     }
 
-    public function show($id): JsonResponse
+    public function update(UpdateAction $action, Request $request, int $id): JsonResponse
     {
-        $transaction = $this->service->find($id);
-        return response()->json($transaction, 200);
+        return $action($request, $id);
     }
 
-    public function update(Request $request, $id): JsonResponse
+    public function destroy(DestroyAction $action, int $id): JsonResponse
     {
-        $data = $request->validate([
-            'clients_id' => 'sometimes|exists:clients,id',
-            'stores_id' => 'sometimes|exists:stores,id',
-            'point_changes' => 'sometimes|integer',
-            'type' => 'sometimes|in:accumulate, redeem',
-            'reason' => 'nullable|string|max:150'
-        ]);
-
-        $transaction = $this->service->update($id, $data);
-        return response()->json($transaction, 200);
+        return $action($id);
     }
 
-    public function destroy($id): Response
+    public function grantPoints(GrantPointsAction $action, Request $request): JsonResponse
     {
-        $this->service->delete($id);
-        return response()->noContent();
+        return $action($request);
     }
-
-    public function grantPoints(Request $request): JsonResponse
-    {
-        $data = $request->validate([
-            'qr_code_data' => 'required|string',
-            'stores_id' => 'required|exists:stores,id',
-            'point_changes' => 'required|integer|min:1',
-            'reason' => 'nullable|string'
-        ]);
-
-        $qrData = json_decode($data['qr_code_data'], true);
-
-        if (!$qrData || !isset($qrData['clients_id'],
-                $qrData['phone_number'])) {
-            return response()->json(['message' => 'Dados do QR code são inválidos'], 422);
-        }
-
-        $client = Clients::where('id', $qrData['clients_id'])
-            ->where('phone_number', $qrData['phone_number'])
-            ->first();
-
-        if (!$client) {
-            return response()->json(['message' => "Cliente não encontrado ou número de telefone não condiz ao cliente"]);
-        }
-
-        $transactions = $this->service->create([
-            'clients_id' => $client->id,
-            'stores_id' => $data['stores_id'],
-            'point_changes' => $data['point_changes'],
-            'type' => 'accumulate',
-            'reason' => $data['reason'] ?? 'Pontos creditados via QR Code.'
-        ]);
-
-        Points::create([
-            'clients_id' => $client->id,
-            'stores_id' =>  $data['stores_id'],
-            'transactions_id' => $transactions->id,
-            'points' => $data['point_changes']
-        ]);
-
-        return response()->json($transactions, 201);
-    }
-
-    }
+}
