@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ClientsController;
-use App\Http\Controllers\StoresController;
-use App\Http\Controllers\TransactionsController;
-use App\Http\Controllers\PointsController;
-use App\Http\Controllers\RulesController;
+use App\Controllers\ClientsController;
+use App\Controllers\StoresController;
+use App\Controllers\TransactionsController;
+use App\Controllers\PointsController;
+use App\Controllers\RulesController;
 
 Route::prefix('clients')->group(function () {
     Route::get('/', [ClientsController::class, 'index']);
@@ -42,7 +42,7 @@ Route::prefix('points')->group(function () {
     Route::get('total', [PointsController::class, 'getTotalPoints']);
 });
 
-Route::prefix('store-rules')->group(function () {
+Route::prefix('rules')->group(function () {
     Route::get('/', [RulesController::class, 'index']);
     Route::post('/', [RulesController::class, 'store']);
     Route::get('/{id}', [RulesController::class, 'show']);

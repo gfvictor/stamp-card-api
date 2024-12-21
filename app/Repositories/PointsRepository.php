@@ -18,4 +18,9 @@ class PointsRepository extends BaseRepository
             ->where('stores_id', $storeId)
             ->sum('points');
     }
+
+    public function getPointsByClient(int $clientId): array
+    {
+        return $this::where('clients_id', $clientId)->sum('points');
+    }
 }

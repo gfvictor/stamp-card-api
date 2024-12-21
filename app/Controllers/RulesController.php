@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Controllers;
 
 use App\Services\RulesService;
 use Illuminate\Http\Response;
@@ -32,9 +32,15 @@ class RulesController extends Controller
     {
         $data = $request->validate([
             'stores_id' => 'required|exists:stores,id',
-            'rule_name' => 'required|string|max:150',
-            'rule_description' => 'nullable|string'
+            'yen_per_point' => 'required|integer|min:1',
+            'discount_amount' => 'nullable|integer|min:1',
+            'discount_type' => 'nullable|in:cash,percentage',
+            'expiration_in_months' => 'nullable|integer|between:1,12'
         ]);
+
+        $data['discount_amount'] = $data['discount_amount'] ?? 0;
+        $data['discount_type'] = $data['discount_type'] ?? null;
+        $data['expiration_in_months'] = $data['expiration_in_months'] ?? null;
 
         $rule = $this->service->createRule($data);
         return response()->json($rule, 201);
@@ -49,8 +55,8 @@ class RulesController extends Controller
     public function update(Request $request, $id): JsonResponse
     {
         $data = $request->validate([
-            'rule_name' => 'sometimes|string|max:150',
-            'rule_description' => 'nullable|string'
+            'rule_name' => 'sometimes|string|max:50',
+            'rule_description' => 'sometimes|string|max:150'
         ]);
 
         $rule = $this->service->updateRule($id, $data);

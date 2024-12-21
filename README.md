@@ -1,66 +1,465 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# **Projeto de Digitalização de Programa de Fidelidade (Cartão de Pontos)**
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### Índice:
 
-## About Laravel
+- [Descrição do Projeto](#descrição-do-projeto)
+- [Como Executar o Projeto](#como-executar-o-projeto)
+- [Estrutura do Banco de Dados](#estrutura-do-banco-de-dados)
+- [Endpoints da API](#endpoints-da-api)
+  - [Clientes](#clientes)
+  - [Lojas](#lojas)
+  - [Regras](#regras)
+  - [Transações](#transações)
+  - [Pontos](#pontos)
+- [Próximos Passos](#próximos-passos)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Descrição do Projeto:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Sistema de gerenciamento de pontos de fidelidade, permitindo que clientes acumulem pontos com base em suas compras 
+em lojas específicas. A lógica de pontos é baseada em regras personalizadas por loja, e distribuída pela aplicação.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Tecnologias Utilizadas:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **Laravel 11.x** - Framework PHP para o backend.
+- **MySQL** - Banco de dados relacional.
+- **Composer** - Gerenciamento de dependências.
+- **Postman** - Testes de API.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Funcionalidades Principais:
 
-## Laravel Sponsors
+- **Clientes**: Cadastro, consulta e gerenciamento.
+- **Lojas**: Regras personalizadas para cálculo de pontos.
+- **Regras**: Definição de quantidade de pontos por valor gasto por cliente em cada loja específica.
+- **Transações**: Acúmulo ou resgate de pontos com base em compras realizadas.
+- **Pontos**: Consulta total de pontos acumulados por clientes e envio de notificações para clientes e lojas.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## Como Executar o Projeto:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+*Certifique-se de que o PHP, Composer e MySQL estejam configurados corretamente.*
 
-## Contributing
+- Clone o repositório:
+```bash
+git clone https://github.com/gfvictor/stamp-card-api.git
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Entre no diretório do projeto:
+```bash
+cd stamp-card-api 
+```
 
-## Code of Conduct
+- Instale as dependências:
+```bash
+composer install 
+  ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Crie o arquivo .env copiando o exemplo fornecido:
+```bash
+cp .env.example .env
+```
 
-## Security Vulnerabilities
+- Edite o arquivo .env para configurar as suas credenciais do banco de dados:
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=stamp_card_api
+DB_USERNAME=seu_usuário
+DB_PASSWORD=sua_senha
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Gere a chave para a aplicação:
+  - *Isso atualizará automaticamente o campo APP_KEY no .env*
+```bash
+php artisan key:generate
+```
 
-## License
+- Execute as migrações:
+```bash
+php artisan migrate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Inicie o servidor:
+```bash
+php artisan serve 
+```
+
+- O projeto estará disponível no endereço: http://localhost:8000
+- Teste os endpoints, listados abaixo da estrutura de banco de dados, usando o Postman ou Insomnia.
+
+
+- [Voltar para o Índice](#índice)
+
+---
+
+## **Estrutura do Banco de Dados**:
+
+- Tabela ***clients***:
+
+| Campo        | Tipo      | Descrição                          |
+|--------------|-----------|------------------------------------|
+| id           | bigint    | Identificador único.               |
+| name         | string    | Nome do cliente.                   |
+| email        | string    | Email único do cliente.            |
+| password     | string    | Senha do cliente (min: 8 dígitos). |
+| phone_number | string    | Número de telefone do cliente.     |
+| created_at   | timestamp | Data de criação.                   |
+| updated_at   | timestamp | Data de atualização.               |
+
+
+- Tabela ***stores***:
+
+| Campo       | Tipo      | Descrição                       |
+|-------------|-----------|---------------------------------|
+| id          | bigint    | Identificador único.            |
+| name        | string    | Nome da loja.                   |
+| email       | string    | Email único da loja.            |
+| password    | string    | Senha da loja (min: 8 dígitos). |
+| address     | string    | Endereço da loja.               |
+| created_at  | timestamp | Data de criação.                |
+| updated_ at | timestamp | Data de atualização.            |
+
+- Tabela ***rules***:
+
+| Campo                | Tipo      | Descrição                                         |
+|----------------------|-----------|---------------------------------------------------|
+| id                   | bigint    | Identificador único.                              |
+| stores_id            | bigint    | FK para a loja.                                   |
+| yen_per_point        | integer   | Define quantos ienes gera 1 ponto.                |
+| discount_amount      | integer   | Define valor do desconto para resgate.            |
+| discount_type        | enum      | Define tipo de desconto ("cash" ou "percentage"). |
+| expiration_in_months | integer   | Validade dos pontos (1 = Janeiro, etc.).          |
+| created_at           | timestamp | Data de criação.                                  |
+| updated_at           | timestamp | Data de atualização.                              |
+
+- Tabela ***transactions***:
+
+| Campo         | Tipo      | Descrição                                     |
+|---------------|-----------|-----------------------------------------------|
+| id            | bigint    | Identificador único.                          |
+| clients_id    | bigint    | FK para o cliente.                            |
+| stores_id     | bigint    | FK para a loja.                               |
+| amount_spent  | integer   | Valor da transação.                           |
+ | point_changes | integer   | Quantidade de pontos gerados ou resgatados.   |
+| type          | enum      | Tipo de transação ("accumulate" ou "redeem"). |
+| reason        | string    | Descrição da transação                        |
+| created_at    | timestamp | Data de criação                               |
+
+- Tabela ***points***:
+
+| Campo           | Tipo      | Descrição                     |
+|-----------------|-----------|-------------------------------|
+| id              | bigint    | Identificador único.          |
+| clients_id      | bigint    | FK para o cliente.            |
+| stores_id       | bigint    | FK para a loja.               |
+| transactions_id | bigint    | FK para a transação.          |
+| points          | integer   | quantidade de pontos somados. |
+| created_at      | timestamp | Data de criação.              |
+
+
+- [Voltar para o Índice](#índice)
+
+---
+
+## Endpoints da API:
+
+### Clientes:
+
+- Criar cliente:
+  - `POST /api/clients`
+    - Body:
+```json
+{
+  "name": "Cliente",
+  "email": "cliente@email.com",
+  "password": "senha123",
+  "phone_number": "08012345678"
+}
+```
+-
+  - 
+     - Resposta:
+```json
+{
+  "id": 1,
+  "name": "Cliente",
+  "email": "cliente@email.com",
+  "password": "senha123",
+  "phone_number": "08012345678",
+  "created_at": "2024-12-16T12:00:00Z"
+}
+```
+- Listar todos os clientes:
+  - `GET /api/clients`
+
+- Listar cliente por id:
+  - `GET /api/clients/{id}`
+
+- Editar cliente:
+  - `PUT /api/clients/{id}`
+    - Body:
+```json
+{
+  "password": "senha456"
+}
+```
+-
+  - 
+     - Resposta:
+```json
+{
+  "id": 1,
+  "name": "Cliente",
+  "email": "cliente@email.com",
+  "phone_number": "08012345678",
+  "created_at": "2024-12-16T12:00:00Z",
+  "updated_at": "2024-12-16T14:23:54Z"
+}
+```
+
+- Excluir cliente:
+  - `DELETE /api/clients/{id}`
+    - Resposta:
+```json
+{
+  "message": "Cliente deletado com sucesso."
+}
+```
+
+- Gerar QR Code:
+  - `GET /api/clients/{id}/qr-code`
+    - Body:
+```json
+{
+  "qr-code": "<base64_encoded_qr_code>"
+}
+```
+
+### Lojas:
+
+- Criar loja:
+  - `POST /api/stores`
+    - Body:
+```json
+{
+  "name": "Loja",
+  "email": "loja@email.com",
+  "password": "senha123",
+  "address": "Nome da Rua, Número, Cidade, Província"
+}
+```
+-
+  -
+    - Resposta:
+```json
+{
+  "id": 1,
+  "name": "Loja",
+  "email": "loja@email.com",
+  "password": "senha123",
+  "address": "Nome da Rua, Número, Cidade, Província",
+  "created_at": "2024-12-16T12:00:00Z"
+}
+```
+
+- Listar todas as lojas:
+  - `GET /api/stores`
+
+- Listar loja por id:
+  - `GET /api/stores/{id}`
+
+- Editar loja:
+  - `PUT /api/stores/{id}`
+    - Body:
+```json
+{
+  "name": "Loja Renovada"
+}
+```
+-
+  -
+    - Resposta:
+```json
+{
+  "id": 1,
+  "name": "Loja Renovada",
+  "email": "loja@email.com",
+  "address": "Nome da Rua, Número, Cidade, Província",
+  "created_at": "2024-12-16T12:00:00Z",
+  "updated_at": "2024-12-17T07:21:33Z"
+}
+```
+
+- Excluir loja:
+  - `DELETE /api/stores/{id}`
+    - Resposta:
+```json
+{
+  "message": "Loja deletada com sucesso."
+}
+```
+
+### Regras:
+
+- Criar regra para loja:
+  - `POST /api/rules`
+    - Body:
+```json
+{
+  "stores_id": 1,
+  "yen_per_point": 200
+}
+```
+-
+  -
+    - Resposta:
+```json
+{
+  "stores_id": 1,
+  "yen_per_point": 200,
+  "discount_amount": 0,
+  "discount_type": null,
+  "expiration_in_months": null,
+  "created_at": "2024-12-16T12:00:00Z"
+}
+```
+- Listar todas as regras:
+  - `GET /api/rules`
+
+- Listar regra por id:
+  - `GET /api/rules/{id}`
+
+- Listar regra por loja:
+  - `GET /api/rules/store/{stores_id}`
+
+- Editar regra:
+  - `PUT /api/rules/{id}`
+    - Body:
+```json
+{
+  "yen_per_point": 400
+}
+```
+
+- 
+  -
+    - Resposta:
+```json
+{
+  "stores_id": 1,
+  "yen_per_point": 400,
+  "discount_amount": 0,
+  "discount_type": null,
+  "expiration_in_months": null,
+  "created_at": "2024-12-16T12:00:00Z",
+  "updated_At": "2024-12-17T04:11:41Z"
+}
+```
+
+- Excluir regra:
+  - `DELETE /api/rules/{id}`
+    - Resposta:
+```json
+{
+  "message": "Regra deletada com sucesso."
+}
+```
+
+### Transações:
+
+- Gerar pontos para cliente via QR Code:
+  - `POST /api/transactions/grant-points`
+    - Body:
+```json
+{
+  "qr_code_data": "{\"clients_id\":1\"phone_number\":\"08012345678\"}",
+  "stores_id": 1,
+  "amount_spent": 4760
+}
+```
+
+-
+  -
+    - Resposta:
+```json
+{
+  "id": 1,
+  "clients_id": 1,
+  "stores_id": 1,
+  "amount_spent": 4760,
+  "point_changes": 23,
+  "type": "accumulate",
+  "reason": "Pontos creditados via QR Code!",
+  "created_at": "2024-12-16T12:00:00Z"
+}
+```
+
+- Listar todas as transações:
+  - `GET /api/transactions`
+
+- Listar transação por id:
+  - `GET /api/transactions/{id}`
+
+## Pontos:
+
+- Listar todos os pontos:
+  - `GET /api/points`
+
+- Listar pontos por id:
+  - `GET /api/points/{id}`
+
+- Excluir pontos:
+  - `DELETE /api/points/{id}`
+    - Resposta:
+```json
+{
+  "message": "Pontos deletados com sucesso."
+}
+```
+- [Voltar para o Índice](#índice)
+
+---
+
+## Próximos Passos:
+
+1. **Finalizar a criação de Actions:**
+   - Criar Actions para Rules e Points.
+
+
+2. **Verificação de Pontos:**
+    - Confirmar se a lógica de soma de pontos está correta.
+    - Corrigir o endpoint /points/total (talvez redundante).
+    - Restringir o acesso à edição e exclusão de pontos para apenas o admin.
+
+
+3. **Endpoints para Admin:**
+    - Criar lógica e endpoints para admins.
+    - configurar autenticação.
+
+
+4. **Autenticação:**
+    - Implementar autenticação com tokens JWT (ou somente sanctum) para proteger os endpoints da API.
+    - permitir que apenas usuários autenticados acessem as rotas.
+    - Definir quais elementos terão acesso às quais rotas.
+    - Definir acesso para Admins.
+
+
+5. **Teste Automatizado:**
+    - Criar testes unitários e de integração para validar a lógica dos pontos e das transações.
+
+
+6. **Relatórios:**
+    - Implementar lógica e endpoints para gerar relatórios detalhados:
+      - Total de pontos acumulados por loja.
+      - Histórico completo de transações de cada cliente.
+      - Histórico de resgate de pontos semanais ou mensais para fechamento de caixa das lojas.
+
+
+- [Voltar para o Índice](#índice)
+
+---
