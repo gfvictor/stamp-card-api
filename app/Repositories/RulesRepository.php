@@ -14,6 +14,6 @@ class RulesRepository extends BaseRepository
     public function getRulesByStore($storeId)
     {
         return $this->model
-            ->where('store_id', $storeId)->get();
+            ->where('stores_id', $storeId)->get();
     }
 }
